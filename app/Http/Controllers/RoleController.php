@@ -37,4 +37,8 @@ class RoleController
     {
         //
     }
+
+    public function showManageForm(string $id) {}
+
+    public function manage(string $id) {}
 }
