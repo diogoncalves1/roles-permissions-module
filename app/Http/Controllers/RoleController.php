@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoleRequest;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class RoleController
         //
     }
 
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
         //
     }
@@ -27,7 +28,7 @@ class RoleController
         //
     }
 
-    public function update(Request $request, Role $role)
+    public function update(RoleRequest $request, Role $role)
     {
         //
     }
