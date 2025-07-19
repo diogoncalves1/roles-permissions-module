@@ -9,4 +9,6 @@ class Permissions extends Model
 {
     /** @use HasFactory<\Database\Factories\PermissionsFactory> */
     use HasFactory;
+
+    protected $fillable = ["name", "code", "category"];
 }
