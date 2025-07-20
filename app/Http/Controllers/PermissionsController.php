@@ -3,13 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PermissionRequest;
-use App\Models\Permissions;
+use App\Repositories\PermissionRepository;
 
-class PermissionsController
+class PermissionsController extends AppController
 {
+    private $permissionRepository;
+
+    public function __construct(PermissionRepository $permissionRepository)
+    {
+        $this->permissionRepository = $permissionRepository;
+    }
+
     public function index()
     {
-        //
+        $this->allowedAction('viewPermissions');
+
+        $permissions = $this->permissionRepository->all();
+
+        return view('admin.permissions.index', ["permissions" => $permissions]);
     }
 
     public function create()
