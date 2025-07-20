@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PermissionRequest;
 use App\Models\Permissions;
-use Illuminate\Http\Request;
 
 class PermissionsController
 {
@@ -17,22 +17,22 @@ class PermissionsController
         //
     }
 
-    public function store(Request $request)
+    public function store(PermissionRequest $request)
     {
         //
     }
 
-    public function edit(Permissions $permissions)
+    public function edit(string $id)
     {
         //
     }
 
-    public function update(Request $request, Permissions $permissions)
+    public function update(PermissionRequest $request, string $id)
     {
         //
     }
 
-    public function destroy(Permissions $permissions)
+    public function destroy(string $id)
     {
         //
     }
