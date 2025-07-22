@@ -54,16 +54,21 @@ class PermissionRepository implements RepositoryInterface
     public function destroy(string $id)
     {
         try {
-            DB::transaction(function () use ($id) {
+            return DB::transaction(function () use ($id) {
                 $permission = Permissions::find($id);
+
+                if (!$permission)
+                    return 0;
+
                 $permission->delete();
 
                 Log::info('Permission ' . $permission->id . ' destroyed.');
-                Session::flash('success', 'Permissão apagada com sucesso!');
+
+                return 1;
             });
         } catch (\Exception $e) {
             Log::error($e);
-            Session::flash('error', 'Erro ao tentar apagar permissão.');
+            return 0;
         }
     }
 

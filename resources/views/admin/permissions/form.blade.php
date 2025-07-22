@@ -2,29 +2,23 @@
 
 @section('title', 'CashManager | Adicionar Permissão ')
 
+
+@section('breadcrumb')
+<li class="breadcrumb-item active"><a class="text-white" href="{{ route('admin.permissions.index') }}">Permissões</a>
+</li>
+<li class="breadcrumb-item active">{{ isset($permission) ? 'Editar' : 'Adicionar' }}</li>
+@endsection
+
 @section('content')
 
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Adicionar Permissão</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/admin/">Home</a></li>
-                    <li class="breadcrumb-item active">Adicionar Permissão</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section class="content">
-    <form action="{{ route('admin.permissions.store') }}" method="POST">
+    <form
+        action="{{ isset($permission) ? route('admin.permissions.update', $permission->id) : route('admin.permissions.store')  }}"
+        method="POST">
         @csrf
         @if(isset($permission))
         @method('PUT')
+        <input hidden name="permission_id" value="{{ $permission->id }}" type="text">
         @else
         @method('POST')
         @endif
@@ -37,14 +31,16 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="inputCode">Código <span class="text-danger">*</span></label>
-                            <input type="text" name="code" class="validate form-control" required>
+                            <input type="text" name="code" value='{{ $permission->code ?? "" }}'
+                                class="validate form-control" required>
                             <span class="error invalid-feedback" id="errorFeedbackCode">Preencha este campo</span>
                             <span class="success valid-feedback">Campo preenchido</span>
                         </div>
 
                         <div class="form-group">
                             <label for="inputDisplayName">Nome <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="validate form-control" required>
+                            <input type="text" name="name" value='{{ $permission->name ?? "" }}'
+                                class="validate form-control" required>
                             <span class="error invalid-feedback">Preencha este
                                 campo</span>
                             <span class="success valid-feedback">Campo preenchido</span>
@@ -52,7 +48,8 @@
 
                         <div class="form-group">
                             <label for="inputDisplayName">Categoria <span class="text-danger">*</span></label>
-                            <input type="text" name="category" class="validate form-control" required>
+                            <input type="text" name="category" value='{{ $permission->category ?? "" }}'
+                                class="validate form-control" required>
                             <span class="error invalid-feedback">Preencha este
                                 campo</span>
                             <span class="success valid-feedback">Campo preenchido</span>
@@ -65,11 +62,14 @@
         <div class=" row">
             <div class="col-12">
                 <a href="{{ route('admin.permissions.index') }}" class="btn btn-secondary">Voltar</a>
-                <button type="submit" id="btnSubmit" class="btn btn-success float-right">Adicionar Permissão</button>
+                <button type="submit" id="btnSubmit"
+                    class="btn btn-success float-right">{{ isset($permission) ? 'Editar' : 'Adicionar' }}
+                    Permissão</button>
             </div>
         </div>
     </form>
 </section>
+
 
 <script src="../../assets/js/allCreate.js"></script>
 <script src="../../assets/admin/js/super-admin/permissions/create.js"></script>

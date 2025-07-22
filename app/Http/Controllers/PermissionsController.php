@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PermissionRequest;
 use App\Repositories\PermissionRepository;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session as FacadesSession;
 
 class PermissionsController extends AppController
 {
@@ -18,7 +20,7 @@ class PermissionsController extends AppController
     public function index()
     {
         // $this->allowedAction('viewPermissions');
-
+        FacadesSession::flash('page', 'permissions');
 
         return view('admin.permissions.index');
     }
@@ -26,6 +28,7 @@ class PermissionsController extends AppController
     public function create()
     {
         // $this->allowedAction('addPermission');
+        FacadesSession::flash('page', 'permissions');
 
         return view('admin.permissions.form');
     }
@@ -42,6 +45,7 @@ class PermissionsController extends AppController
     public function edit(string $id)
     {
         // $this->allowedAction('editPermission');
+        FacadesSession::flash('page', 'permissions');
 
         $permission = $this->permissionRepository->show($id);
 
@@ -61,9 +65,10 @@ class PermissionsController extends AppController
     {
         // $this->allowedAction('destroyPermission');
 
-        $this->permissionRepository->destroy($id);
-
-        return redirect()->route('admin.permissions.index');
+        if ($this->permissionRepository->destroy($id) == 1)
+            return response()->json(["success" => true, 'message' => "Permissão apagada com sucesso!"]);
+        else
+            return response()->json(["error" => true, 'message' => "Erro ao apagar permissão"]);
     }
     public function dataTable(Request $request)
     {

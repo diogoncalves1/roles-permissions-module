@@ -109,8 +109,6 @@
                                     </p>
                                 </a>
                             </li>
-                            @if(auth()->user() && auth()->user()->hasPermission('viewSuperAdmin'))
-                            <li class="nav-header">SUPER ADMIN</li>
                             @if(auth()->user() && auth()->user()->hasPermission('viewUserRoles'))
                             <li class="nav-item">
                                 <a href="/admin/roles"
@@ -122,17 +120,15 @@
                                 </a>
                             </li>
                             @endif
-                            @if(auth()->user() && auth()->user()->hasPermission('viewUserPermissions'))
                             <li class="nav-item">
-                                <a href="/admin/permissions"
-                                    class="nav-link <?= $_SESSION['page'] == 'permissions' ? 'active' : '' ?>">
+                                <a href="{{ route('admin.permissions.index') }}"
+                                    class="nav-link {{ session('page') == 'permissions' ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-user-shield"></i>
                                     <p>
                                         Permissões de Utilizador
                                     </p>
                                 </a>
                             </li>
-                            @endif
                             @if(auth()->user() && auth()->user()->hasPermission('viewSharedPermissions'))
                             <li class="nav-item">
                                 <a href="/admin/shared-permissions"
@@ -143,7 +139,6 @@
                                     </p>
                                 </a>
                             </li>
-                            @endif
                             @endif
                         </ul>
                     </nav>

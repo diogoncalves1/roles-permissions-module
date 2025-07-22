@@ -8,24 +8,11 @@
 <link rel="stylesheet" href="/admin-lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 @endsection
 
-@section('content')
+@section('breadcrumb')
+<li class="breadcrumb-item active">Permissões</li>
+@endsection
 
-<section class="content-header">
-    <div class="container-fluid">
-        @include('components.notifications')
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Permissões</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Permissões</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</section>
+@section('content')
 
 <section class="content">
     <div class="container-fluid">
@@ -61,6 +48,8 @@
 
 @section('script')
 <script src="../assets/admin/js/permissions/index.js"></script>
+<script src="../assets/js/allIndex.js"></script>
+
 <script src="/admin-lte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="/admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>

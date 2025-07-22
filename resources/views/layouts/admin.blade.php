@@ -40,9 +40,12 @@
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
+                    @include('components.notifications')
                     <div class="row mb-2">
                         <div class="col-sm-12">
                             <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a class="text-white"
+                                        href="{{--  route('home') --}}">Home</a></li>
                                 @yield('breadcrumb')
                             </ol>
                         </div>
