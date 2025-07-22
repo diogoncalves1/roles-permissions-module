@@ -2,16 +2,17 @@
 
 namespace App\Repositories;
 
+use Illuminate\Http\Request;
 
-class RepositoryInterface
+interface RepositoryInterface
 {
-    public function all() {}
+    public function all();
 
-    public function store() {}
+    public function store(Request $request);
 
-    public function update() {}
+    public function update(Request $request, string $id);
 
-    public function destroy(string $id) {}
+    public function destroy(string $id);
 
-    public function show(string $id) {}
+    public function show(string $id);
 }

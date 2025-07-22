@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Http\Requests\PermissionRequest;
 use App\Models\Permissions;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -15,7 +15,7 @@ class PermissionRepository implements RepositoryInterface
         return Permissions::all();
     }
 
-    public function store(PermissionRequest $request)
+    public function store(Request $request)
     {
         try {
             $input = $request->all();
@@ -32,7 +32,7 @@ class PermissionRepository implements RepositoryInterface
         }
     }
 
-    public function update(PermissionRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         try {
             $input = $request->all();

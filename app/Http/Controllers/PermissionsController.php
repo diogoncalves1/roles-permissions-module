@@ -16,7 +16,7 @@ class PermissionsController extends AppController
 
     public function index()
     {
-        $this->allowedAction('viewPermissions');
+        // $this->allowedAction('viewPermissions');
 
         $permissions = $this->permissionRepository->all();
 
@@ -25,14 +25,14 @@ class PermissionsController extends AppController
 
     public function create()
     {
-        $this->allowedAction('addPermission');
+        // $this->allowedAction('addPermission');
 
-        return view('permissions.form');
+        return view('admin.permissions.form');
     }
 
     public function store(PermissionRequest $request)
     {
-        $this->allowedAction('addPermission');
+        // $this->allowedAction('addPermission');
 
         $this->permissionRepository->store($request);
 
@@ -41,7 +41,7 @@ class PermissionsController extends AppController
 
     public function edit(string $id)
     {
-        $this->allowedAction('editPermission');
+        // $this->allowedAction('editPermission');
 
         $permission = $this->permissionRepository->show($id);
 
@@ -50,7 +50,7 @@ class PermissionsController extends AppController
 
     public function update(PermissionRequest $request, string $id)
     {
-        $this->allowedAction('editPermission');
+        // $this->allowedAction('editPermission');
 
         $this->permissionRepository->update($request, $id);
 
@@ -59,7 +59,7 @@ class PermissionsController extends AppController
 
     public function destroy(string $id)
     {
-        $this->allowedAction('destroyPermission');
+        // $this->allowedAction('destroyPermission');
 
         $this->permissionRepository->destroy($id);
 
