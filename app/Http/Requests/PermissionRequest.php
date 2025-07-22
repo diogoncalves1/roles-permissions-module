@@ -30,7 +30,7 @@ class PermissionRequest extends FormRequest
         if ($this->get("permission_id"))
             $rules["code"] = ['required', Rule::unique('permissions')->ignore($this->get("permission_id")), 'max:255'];
         else
-            $rules["code"] = ["required|unique:permissions|max:255"];
+            $rules["code"] = "required|unique:permissions|max:255";
 
         return $rules;
     }

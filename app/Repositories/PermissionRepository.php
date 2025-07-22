@@ -24,6 +24,7 @@ class PermissionRepository implements RepositoryInterface
                 $permission = Permissions::create($input);
 
                 Log::info('Permission ' . $permission->id . ' added');
+
                 Session::flash('success', 'Permissão adicionada com sucesso!');
             });
         } catch (\Exception $e) {
@@ -69,5 +70,55 @@ class PermissionRepository implements RepositoryInterface
     public function show(string $id)
     {
         return Permissions::find($id);
+    }
+
+    public function dataTable(Request $request)
+    {
+        $query = Permissions::query();
+
+        $userLang = $_COOKIE["lang"];
+
+        if ($search = $request->input('search.value')) {
+            $query->where(function ($q) use ($search) {
+                $userLang = $_COOKIE["lang"];
+                $q->where("name", 'like', "{$search}%")
+                    ->orWhere("category", 'like', "{$search}%")
+                    ->orWhere("code", 'like', "{$search}%");
+            });
+        }
+
+        $orderColumnIndex = $request->input('order.0.column');
+        $orderColumn = $request->input("columns.$orderColumnIndex.data");
+        $orderDir = $request->input('order.0.dir');
+        if ($orderColumn && $orderDir) {
+            $query->orderBy($orderColumn, $orderDir);
+        }
+
+        $total = $query->count();
+
+        $permissions = $query->offset($request->start)
+            ->limit($request->length)
+            ->select("name", "category", 'id', 'code',)
+            ->get();
+
+        foreach ($permissions as &$permission) {
+            $permission->actions = "<div class='btn-group'>
+                            <a type='button' href='" . route('admin.permissions.edit', $permission->id) . "' class='btn btn-default'>
+                                <i class='fas fa-edit'></i>
+                            </a>
+                            <button type='button' onclick='modalDelete({$permission->id})' class='btn btn-default'>
+                                <i class='fas fa-trash'></i>
+                            </button>
+                        </div>";
+        }
+
+        $data = [
+            'draw' => intval($request->draw),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $total,
+            'data' => $permissions
+        ];
+
+        return $data;
     }
 }

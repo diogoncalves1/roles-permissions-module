@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PermissionRequest;
 use App\Repositories\PermissionRepository;
+use Illuminate\Http\Request;
 
 class PermissionsController extends AppController
 {
@@ -18,9 +19,8 @@ class PermissionsController extends AppController
     {
         // $this->allowedAction('viewPermissions');
 
-        $permissions = $this->permissionRepository->all();
 
-        return view('admin.permissions.index', ["permissions" => $permissions]);
+        return view('admin.permissions.index');
     }
 
     public function create()
@@ -36,7 +36,7 @@ class PermissionsController extends AppController
 
         $this->permissionRepository->store($request);
 
-        redirect(route('admin.permissions.index'));
+        return redirect()->route('admin.permissions.index');
     }
 
     public function edit(string $id)
@@ -45,7 +45,7 @@ class PermissionsController extends AppController
 
         $permission = $this->permissionRepository->show($id);
 
-        return view('permissions.create', ['permission' => $permission]);
+        return view('admin.permissions.form', ['permission' => $permission]);
     }
 
     public function update(PermissionRequest $request, string $id)
@@ -54,7 +54,7 @@ class PermissionsController extends AppController
 
         $this->permissionRepository->update($request, $id);
 
-        redirect(route('admin.permissions.index'));
+        return redirect()->route('admin.permissions.index');
     }
 
     public function destroy(string $id)
@@ -63,6 +63,12 @@ class PermissionsController extends AppController
 
         $this->permissionRepository->destroy($id);
 
-        redirect(route('admin.permissions.index'));
+        return redirect()->route('admin.permissions.index');
+    }
+    public function dataTable(Request $request)
+    {
+        $data = $this->permissionRepository->dataTable($request);
+
+        return response()->json($data);
     }
 }

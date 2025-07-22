@@ -18,5 +18,6 @@ Route::group([
         }
     );
     Route::resource("roles", \App\Http\Controllers\RoleController::class, ['except' => 'show']);
+    Route::get('permissions/data', [\App\Http\Controllers\PermissionsController::class, 'dataTable']);
     Route::resource("permissions", \App\Http\Controllers\PermissionsController::class, ['except' => 'show']);
 });

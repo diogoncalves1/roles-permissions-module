@@ -61,6 +61,7 @@
     <script src="/admin-lte/dist/js/adminlte.min.js"></script>
     <script src="/admin-lte/pluins/toastr/toasgtr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/assets/js/all.js"></script>
     @yield('script')
 </body>
 

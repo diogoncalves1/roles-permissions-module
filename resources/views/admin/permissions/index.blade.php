@@ -2,10 +2,17 @@
 
 @section('title', ' Permissões ')
 
+@section('css')
+<link rel="stylesheet" href="/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="/admin-lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+@endsection
+
 @section('content')
 
 <section class="content-header">
     <div class="container-fluid">
+        @include('components.notifications')
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1>Permissões</h1>
@@ -42,23 +49,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($permissions as $permission)
-                                <tr>
-                                    <td>{{ $permission->code }}</td>
-                                    <td>{{ $permission->name }}</td>
-                                    <td>{{ $permission->category }}</td>
-                                    <td>
-                                        @can('authorization', 'editPermission')
-                                        <a class="btn btn-warning btn-sm"
-                                            href="{{ route('admin.permissions.edit', $permission->id) }}">Editar</a>
-                                        @endcan
-                                        @can('authorization', 'deletePermission')
-                                        <button class="btn btn-danger btn-sm btnDelete"
-                                            data-id="{{ $permission->id }}">Excluir</button>
-                                        @endcan
-                                    </td>
-                                </tr>
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -67,8 +57,14 @@
         </div>
     </div>
 </section>
+@endsection
 
-<script src="../assets/js/allIndex.js"></script>
-<script src="../assets/admin/js/super-admin/permissions/index.js"></script>
-
+@section('script')
+<script src="../assets/admin/js/permissions/index.js"></script>
+<script src="/admin-lte/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/admin-lte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/admin-lte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 @endsection
