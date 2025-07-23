@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use App\Http\Requests\UpdateRolePermissionsRequest;
 use App\Repositories\PermissionRepository;
 use App\Repositories\RoleRepository;
 use Illuminate\Http\Request;
@@ -74,22 +75,36 @@ class RoleController extends AppController
 
     public function showManageForm(string $id)
     {
+        // $this->allowedAction('manageRolePermissions');
+
+        Session::flash('page', 'roles');
+
         $rolePermissionsIds = $this->roleRepository->getRolePermissionsIds($id);
 
         $permissionsGrouped = $this->permissionRepository->getPermissionsGrouped();
 
         $data = [
             "rolePermissionsIds" => $rolePermissionsIds,
-            "permissionsGrouped" => $permissionsGrouped
+            "permissionsGrouped" => $permissionsGrouped,
+            "roleId" => $id
         ];
 
         return view('admin.roles.manage', $data);
     }
 
-    public function manage(string $id) {}
+    public function manage(UpdateRolePermissionsRequest $request, string $id)
+    {
+        // $this->allowedAction('manageRolePermissions');
+
+        $this->roleRepository->managePermissions($request, $id);
+
+        return redirect()->route('admin.roles.index');
+    }
 
     public function dataTable(Request $request)
     {
+        // $this->allowedAction('viewRoles');
+
         $data = $this->roleRepository->dataTable($request);
 
         return response()->json($data);

@@ -2,7 +2,6 @@
 
 @section('title', 'CashManager | Adicionar Papeis ')
 
-
 @section('breadcrumb')
 <li class="breadcrumb-item active"><a class="text-white" href="{{ route('admin.roles.index') }}">Papeis</a>
 </li>

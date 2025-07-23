@@ -137,4 +137,21 @@ class RoleRepository implements RepositoryInterface
             return [];
         }
     }
+
+    public function managePermissions(Request $request, string $id)
+    {
+        try {
+            DB::transaction(function () use ($request, $id) {
+                $role = $this->show($id);
+
+                $role->permissions()->sync($request->input('permissions', []));
+
+                Log::info('Role Permissions Updated');
+                Session::flash('success', 'Permissões de papel atualizadas com sucesso');
+            });
+        } catch (\Exception $e) {
+            Log::error($e);
+            Session::flash('error', 'Erro ao tentar atualizar as permissões do perfil');
+        }
+    }
 }
