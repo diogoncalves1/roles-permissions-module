@@ -1,61 +1,77 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"> <a href="https://laravel.com" target="_blank"> <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"> </a> </p> <p align="center"> <strong>Modular Role & Permission System for Laravel</strong><br> A clean and flexible authorization structure using roles and permissions for admin-based applications. </p>
+📘 Project Overview
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project implements a modular Roles and Permissions system in Laravel, allowing administrators to assign specific roles to users, each with a defined set of permissions.
 
-## About Laravel
+A role can have multiple permissions.
+A user can be assigned one or more roles, and inherit the associated permissions.
+Intended for use in admin panels or applications where access control is required for specific actions or modules.
+🔐 Use Case Examples
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Role	Permissions
+Admin	Create, edit, delete users, manage roles & system
+Editor	Edit content, manage own articles
+Viewer	View dashboards and reports only
+⚙️ Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Fully modular architecture using nwidart/laravel-modules
+CRUD operations for:
+Roles
+Permissions
+Role-permission relationship management
+Form validation and user feedback
+Middleware-ready for route protection
+📦 Installation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Clone the repository or add the module to your Laravel app.
+Install dependencies:
+composer install
+Run migrations:
+php artisan migrate
+(Optional) Seed default roles and permissions:
+php artisan db:seed
+🧱 Module Structure
 
-## Learning Laravel
+Modules/
+└── Permission/
+    ├── Http/
+    │   └── Controllers/
+    ├── Models/
+    │   ├── Role.php
+    │   └── Permission.php
+    ├── Repositories/
+    ├── Routes/
+    │   └── web.php
+    └── Providers/
+        └── PermissionServiceProvider.php
+🔐 Example Usage with Middleware
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Route::middleware(['auth', 'can:manage-users'])->group(function () {
+    Route::resource('roles', RoleController::class);
+});
+You can define custom gates or policies to check permissions at the controller or route level.
+🧪 Testing
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Tests can be added to ensure role and permission logic behaves as expected, including:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Access restrictions
+Permission assignments
+Validation logic
+(You may use PHPUnit or Pest as preferred.)
 
-## Laravel Sponsors
+📄 License
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+This project is open-sourced under the MIT license.
 
-### Premium Partners
+📌 Customization & Extension
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+You are free to adapt and extend this module to fit your application's needs, including:
 
-## Contributing
+Integration with spatie/laravel-permission (optional)
+API support with Passport or Sanctum
+Multi-tenancy and team-based permissions
+Let me know if you'd like to:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Add contributor credits
+Integrate Spatie permission package
+Include example seeder/usage commands
