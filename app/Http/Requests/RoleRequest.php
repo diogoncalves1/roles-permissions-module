@@ -29,7 +29,7 @@ class RoleRequest extends FormRequest
         if ($this->get("role_id"))
             $rules['code'] = ['required', Rule::unique('roles')->ignore($this->get("role_id")), 'max:191'];
         else
-            $rules['code'] = ["required|unique:roles|max:191"];
+            $rules['code'] = "required|unique:roles|max:191";
 
         return $rules;
     }

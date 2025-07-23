@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PermissionRequest;
 use App\Repositories\PermissionRepository;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session as FacadesSession;
+use Illuminate\Support\Facades\Session;
 
 class PermissionsController extends AppController
 {
@@ -20,7 +19,7 @@ class PermissionsController extends AppController
     public function index()
     {
         // $this->allowedAction('viewPermissions');
-        FacadesSession::flash('page', 'permissions');
+        Session::flash('page', 'permissions');
 
         return view('admin.permissions.index');
     }
@@ -28,7 +27,7 @@ class PermissionsController extends AppController
     public function create()
     {
         // $this->allowedAction('addPermission');
-        FacadesSession::flash('page', 'permissions');
+        Session::flash('page', 'permissions');
 
         return view('admin.permissions.form');
     }
@@ -45,7 +44,7 @@ class PermissionsController extends AppController
     public function edit(string $id)
     {
         // $this->allowedAction('editPermission');
-        FacadesSession::flash('page', 'permissions');
+        Session::flash('page', 'permissions');
 
         $permission = $this->permissionRepository->show($id);
 

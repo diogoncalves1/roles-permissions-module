@@ -53,26 +53,88 @@ class RoleRepository implements RepositoryInterface
     public function destroy(string $id)
     {
         try {
-            DB::transaction(function () use ($id) {
+            return DB::transaction(function () use ($id) {
                 $role = $this->show($id);
                 if ($role->users->count() > 0) {
-                    Session::flash('warning', 'Existem Utilizadores com esse perfil, verifique de alterar o perfil desses utilizadores.');
-                    return;
+                    return response()->json(["error" => true, 'message' => "Existem Utilizadores com esse perfil, verifique de alterar o perfil desses utilizadores."], 403);
                 }
 
                 $role->delete();
 
                 Log::info('Role ' . $role->id . ' deleted');
-                Session::flash('success', 'Perfil apagado com sucesso!');
+                return response()->json(["error" => true, 'message' => "Perfil apagado com sucesso!"]);
             });
         } catch (\Exception $e) {
             Log::error($e);
-            Session::flash('error', 'Erro ao tentar apagar esse perfil.');
+            return response()->json(["error" => true, 'message' => "Erro ao tentar apagar esse perfil."], 500);
         }
     }
 
     public function show(string $id)
     {
         return Role::find($id);
+    }
+
+    public function dataTable(Request $request)
+    {
+        $query = Role::query();
+        if ($search = $request->input('search.value')) {
+            $query->where(function ($q) use ($search) {
+                $q->where("name", 'like', "{$search}%")
+                    ->orWhere("code", 'like', "{$search}%");
+            });
+        }
+
+        $orderColumnIndex = $request->input('order.0.column');
+        $orderColumn = $request->input("columns.$orderColumnIndex.data");
+        $orderDir = $request->input('order.0.dir');
+        if ($orderColumn && $orderDir) {
+            $query->orderBy($orderColumn, $orderDir);
+        }
+
+        $total = $query->count();
+
+        $roles = $query->offset($request->start)
+            ->limit($request->length)
+            ->select("name", 'id', 'code',)
+            ->get();
+
+        foreach ($roles as &$role) {
+            $role->actions = "<div class='btn-group'>
+                            <a type='button' href='" . route('admin.roles.manage', $role->id) . "' class='btn mr-1 btn-default'>
+                                <i class='fas fa-cogs'></i>
+                            </a>
+                            <a type='button' href='" . route('admin.roles.edit', $role->id) . "' class='btn mr-1 btn-default'>
+                                <i class='fas fa-edit'></i>
+                            </a>
+                            <button type='button' onclick='modalDelete({$role->id})' class='btn btn-default'>
+                                <i class='fas fa-trash'></i>
+                            </button>
+                        </div>";
+        }
+
+        $data = [
+            'draw' => intval($request->draw),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $total,
+            'data' => $roles
+        ];
+
+        return $data;
+    }
+
+    public function getRolePermissionsIds(string $id)
+    {
+        try {
+            $role = $this->show($id);
+
+            $rolePermissionsIds = $role->permissions->pluck('id')->toArray();
+
+            return $rolePermissionsIds;
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return [];
+        }
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'CashManager | Adicionar Permissão ')
+@section('title', 'CashManager | ' . (isset($permission) ? 'Editar ' : 'Adicionar ') . ' Permissão')
 
 
 @section('breadcrumb')
@@ -69,9 +69,4 @@
         </div>
     </form>
 </section>
-
-
-<script src="../../assets/js/allCreate.js"></script>
-<script src="../../assets/admin/js/super-admin/permissions/create.js"></script>
-
 @endsection

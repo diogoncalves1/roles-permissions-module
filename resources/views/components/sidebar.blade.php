@@ -109,17 +109,15 @@
                                     </p>
                                 </a>
                             </li>
-                            @if(auth()->user() && auth()->user()->hasPermission('viewUserRoles'))
                             <li class="nav-item">
-                                <a href="/admin/roles"
-                                    class="nav-link <?= $_SESSION['page'] == 'roles' ? 'active' : '' ?>">
+                                <a href="{{ route('admin.roles.index') }}"
+                                    class="nav-link {{ session('page') == 'roles' ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-user-shield"></i>
                                     <p>
                                         Papeis de Utilizador
                                     </p>
                                 </a>
                             </li>
-                            @endif
                             <li class="nav-item">
                                 <a href="{{ route('admin.permissions.index') }}"
                                     class="nav-link {{ session('page') == 'permissions' ? 'active' : '' }}">

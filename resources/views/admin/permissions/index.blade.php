@@ -20,7 +20,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        {{-- @can('authorization', 'viewConstruction') --}}
+                        {{-- @can('authorization', 'addPermission') --}}
                         <a href="{{ route('admin.permissions.create') }}" class="btn btn-default">Adicionar
                             Permissão</a>
                         {{-- @endcan --}}

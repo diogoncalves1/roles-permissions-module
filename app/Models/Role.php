@@ -14,16 +14,16 @@ class Role extends Model
 
     public function users()
     {
-        $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class);
     }
 
     public function permissions()
     {
-        $this->belongsToMany(Permissions::class);
+        return $this->belongsToMany(Permissions::class, 'permission_role', null, 'permission_id');
     }
 
     public function proles()
     {
-        $this->hasMany(PermissionRole::class);
+        return $this->hasMany(PermissionRole::class);
     }
 }

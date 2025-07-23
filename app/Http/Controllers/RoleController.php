@@ -3,70 +3,95 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use App\Repositories\PermissionRepository;
 use App\Repositories\RoleRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class RoleController extends AppController
 {
-    private $repository;
+    private $roleRepository;
+    private $permissionRepository;
 
-    public function __construct(RoleRepository $repository)
+    public function __construct(RoleRepository $repository, PermissionRepository $permissionRepository)
     {
-        $this->repository = $repository;
+        $this->roleRepository = $repository;
+        $this->permissionRepository = $permissionRepository;
     }
 
     public function index()
     {
-        $this->allowedAction('viewRoles');
+        // $this->allowedAction('viewRoles');
+        Session::flash('page', 'roles');
 
-        $roles = $this->repository->all();
+        $roles = $this->roleRepository->all();
 
-        return view('roles.index', ['roles' => $roles]);
+        return view('admin.roles.index', ['roles' => $roles]);
     }
 
     public function create()
     {
-        $this->allowedAction('addRole');
+        // $this->allowedAction('addRole');
+        Session::flash('page', 'roles');
 
-        return view('roles.form');
+        return view('admin.roles.form');
     }
 
     public function store(RoleRequest $request)
     {
-        $this->allowedAction('addRole');
+        // $this->allowedAction('addRole');
 
-        $this->repository->store($request);
+        $this->roleRepository->store($request);
 
-        redirect(route('admin.roles.index'));
+        return redirect()->route('admin.roles.index');
     }
 
     public function edit(string $id)
     {
-        $this->allowedAction('editRole');
+        // $this->allowedAction('editRole');
+        Session::flash('page', 'roles');
 
-        $role = $this->repository->show($id);
+        $role = $this->roleRepository->show($id);
 
-        return view('roles.create', ["role" => $role]);
+        return view('admin.roles.form', ["role" => $role]);
     }
 
     public function update(RoleRequest $request, string $id)
     {
-        $this->allowedAction('editRole');
+        // $this->allowedAction('editRole');
 
-        $this->repository->update($request, $id);
+        $this->roleRepository->update($request, $id);
 
-        redirect(route('admin.roles.index'));
+        return redirect()->route('admin.roles.index');
     }
 
     public function destroy(string $id)
     {
-        $this->allowedAction('destroyRole');
+        // $this->allowedAction('destroyRole');
 
-        $this->repository->destroy($id);
-
-        redirect(route('admin.roles.index'));
+        return $this->roleRepository->destroy($id);
     }
 
-    public function showManageForm(string $id) {}
+    public function showManageForm(string $id)
+    {
+        $rolePermissionsIds = $this->roleRepository->getRolePermissionsIds($id);
+
+        $permissionsGrouped = $this->permissionRepository->getPermissionsGrouped();
+
+        $data = [
+            "rolePermissionsIds" => $rolePermissionsIds,
+            "permissionsGrouped" => $permissionsGrouped
+        ];
+
+        return view('admin.roles.manage', $data);
+    }
 
     public function manage(string $id) {}
+
+    public function dataTable(Request $request)
+    {
+        $data = $this->roleRepository->dataTable($request);
+
+        return response()->json($data);
+    }
 }

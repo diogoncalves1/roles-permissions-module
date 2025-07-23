@@ -16,8 +16,12 @@ function tryDelete(id) {
         error: function (error) {
             if (error.status == 403) {
                 console.log(error.responseJSON);
-                errorToast(error.responseJSON.message);
-            } else errorToast("Erro na tentativa.");
+                warningToast(error.responseJSON.message);
+            } else {
+                if (error.responseJSON.message)
+                    return errorToast(error.responseJSON.message);
+                errorToast("Erro na tentativa.");
+            }
         },
     });
 }

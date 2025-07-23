@@ -39,7 +39,7 @@ class PermissionRepository implements RepositoryInterface
             $input = $request->all();
 
             DB::transaction(function () use ($input, $id) {
-                $permission = Permissions::find($id);
+                $permission = $this->show($id);
                 $permission->update($input);
 
                 Log::info('Permission ' . $permission->id . ' updated.');
@@ -55,7 +55,7 @@ class PermissionRepository implements RepositoryInterface
     {
         try {
             return DB::transaction(function () use ($id) {
-                $permission = Permissions::find($id);
+                $permission = $this->show($id);
 
                 if (!$permission)
                     return 0;
@@ -80,12 +80,8 @@ class PermissionRepository implements RepositoryInterface
     public function dataTable(Request $request)
     {
         $query = Permissions::query();
-
-        $userLang = $_COOKIE["lang"];
-
         if ($search = $request->input('search.value')) {
             $query->where(function ($q) use ($search) {
-                $userLang = $_COOKIE["lang"];
                 $q->where("name", 'like', "{$search}%")
                     ->orWhere("category", 'like', "{$search}%")
                     ->orWhere("code", 'like', "{$search}%");
@@ -108,7 +104,7 @@ class PermissionRepository implements RepositoryInterface
 
         foreach ($permissions as &$permission) {
             $permission->actions = "<div class='btn-group'>
-                            <a type='button' href='" . route('admin.permissions.edit', $permission->id) . "' class='btn btn-default'>
+                            <a type='button' href='" . route('admin.permissions.edit', $permission->id) . "' class='btn mr-1 btn-default'>
                                 <i class='fas fa-edit'></i>
                             </a>
                             <button type='button' onclick='modalDelete({$permission->id})' class='btn btn-default'>
@@ -125,5 +121,18 @@ class PermissionRepository implements RepositoryInterface
         ];
 
         return $data;
+    }
+
+    public function getPermissionsGrouped()
+    {
+        try {
+            $permissions = $this->all();
+
+            return $permissions->groupBy('category');
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return [];
+        }
     }
 }
