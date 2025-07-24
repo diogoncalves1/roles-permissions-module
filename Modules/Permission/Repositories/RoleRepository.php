@@ -13,7 +13,7 @@ class RoleRepository implements RepositoryInterface
 {
     public function all()
     {
-        return Role::all();
+        return Role::where('name', '!=', 'superAdmin')->get();
     }
 
     public function store(Request $request)
