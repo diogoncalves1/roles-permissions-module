@@ -1,7 +1,7 @@
 <aside class="main-sidebar elevation-4 sidebar-dark-primary">
 
     <a href="{{ route('admin.permissions.index') }}" class="brand-link bg-primary bg-indigo bg-dark bg-gray-dark">
-        <span class="brand-text font-weight-light">Permissions</span>
+        <span class="brand-text font-weight-light">Permission Module</span>
     </a>
 
     <div
@@ -47,60 +47,6 @@
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview"
                             role="menu" data-accordion="false">
-                            @if(auth()->user() && auth()->user()->hasPermission('viewAdminHome'))
-                            <li class="nav-item">
-                                <a href="/admin" class="nav-link <?= $_SESSION['page'] == 'home' ? 'active' : '' ?>">
-                                    <i class="nav-icon fas fa-home"></i>
-                                    <p>
-                                        Home
-                                    </p>
-                                </a>
-                            </li>
-                            @endif
-                            @if(auth()->user() && auth()->user()->hasPermission('viewAdminCurrencies'))
-                            <li class="nav-item">
-                                <a href="/admin/currencies"
-                                    class="nav-link <?= $_SESSION['page'] == 'currencies' ? 'active' : '' ?>">
-                                    <i class="nav-icon fas fa-coins"></i>
-                                    <p>
-                                        Moedas
-                                    </p>
-                                </a>
-                            </li>
-                            @endif
-                            @if(auth()->user() && auth()->user()->hasPermission('viewCategoriesAdmin'))
-                            <li class="nav-item">
-                                <a href="/admin/categories"
-                                    class="nav-link <?= $_SESSION['page'] == 'categories' ? 'active' : '' ?>">
-                                    <i class="nav-icon fas fa-tags"></i>
-                                    <p>
-                                        Categorias
-                                    </p>
-                                </a>
-                            </li>
-                            @endif
-                            @if(auth()->user() && auth()->user()->hasPermission('viewSharedRoles'))
-                            <li class="nav-item">
-                                <a href="/admin/shared-roles"
-                                    class="nav-link <?= $_SESSION['page'] == 'shared roles' ? 'active' : '' ?>">
-                                    <i class="nav-icon fas fa-people-arrows"></i>
-                                    <p>
-                                        Papeis de Partilha
-                                    </p>
-                                </a>
-                            </li>
-                            @endif
-                            @if(auth()->user() && auth()->user()->hasPermission('viewUsersAdmin'))
-                            <li class="nav-item">
-                                <a href="/admin/users"
-                                    class="nav-link <?= $_SESSION['page'] == 'users' ? 'active' : '' ?>">
-                                    <i class="nav-icon fas fa-users"></i>
-                                    <p>
-                                        Utilizadores
-                                    </p>
-                                </a>
-                            </li>
-                            @endif
                             <li class="nav-item">
                                 <a href="/logout" class="nav-link">
                                     <i class="nav-icon fas fa-door-open"></i>
@@ -109,35 +55,47 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.roles.index') }}"
-                                    class="nav-link {{ session('page') == 'roles' ? 'active' : '' }}">
+                            @can('authorization', 'superAdmin')
+                            <li class="nav-header">SUPER ADMIN</li>
+                            <li class="nav-item {!!  Illuminate\Support\Str::contains(\Request::route()->getName(), 'permissions') || Illuminate\Support\Str::contains(\Request::route()->getName(), 'roles') ? 'menu-open' : '' !!} ">
+                                <a href="#" class="nav-link {!!  Illuminate\Support\Str::contains(\Request::route()->getName(), 'permissions') || Illuminate\Support\Str::contains(\Request::route()->getName(), 'roles') ? 'active' : '' !!} ">
                                     <i class="nav-icon fas fa-user-shield"></i>
                                     <p>
-                                        Papeis de Utilizador
+                                        Administration
+                                        <i class="fas fa-angle-left right"></i>
                                     </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.permissions.index') }}"
+                                            class="nav-link {!!  Illuminate\Support\Str::contains(\Request::route()->getName(), 'permissions') ? 'active' : '' !!}">
+                                            <i class="nav-icon fas fa-user-shield"></i>
+                                            <p>
+                                                Permissions
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.roles.index') }}"
+                                            class="nav-link {!!  Illuminate\Support\Str::contains(\Request::route()->getName(), 'roles') ? 'active' : '' !!}">
+                                            <i class="nav-icon fas fa-user-shield"></i>
+                                            <p>
+                                                Roles
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('telescope', 'requests') }}"
+                                            class="nav-link">
+                                            <i class="nav-icon fas fa-user-shield"></i>
+                                            <p>
+                                                Telescope
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.permissions.index') }}"
-                                    class="nav-link {{ session('page') == 'permissions' ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-user-shield"></i>
-                                    <p>
-                                        Permissões de Utilizador
-                                    </p>
-                                </a>
-                            </li>
-                            @if(auth()->user() && auth()->user()->hasPermission('viewSharedPermissions'))
-                            <li class="nav-item">
-                                <a href="/admin/shared-permissions"
-                                    class="nav-link <?= $_SESSION['page'] == 'shared permissions' ? 'active' : '' ?>">
-                                    <i class="nav-icon fas fa-share-alt"></i>
-                                    <p>
-                                        Permissões de Partilha
-                                    </p>
-                                </a>
-                            </li>
-                            @endif
+                            @endcan
                         </ul>
                     </nav>
                 </div>
